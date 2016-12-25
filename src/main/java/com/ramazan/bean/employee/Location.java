@@ -12,9 +12,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-@Entity
-// @NamedQuery ile bu sekilde tanimlanan sorgular compile sirasinda cacheleniyor
+
+// @NamedQuery ile bu sekilde tanimlanan sorgular HIBERNATE tarafindan compile sirasinda cacheleniyor
 // ben bu sorgulardan birini cagirdigimda ise normalden daha hizli ulasiyorum.
+
 @NamedQueries({
 		@NamedQuery(name = "Location.findAll", query = "SELECT l FROM Location l"),
 		@NamedQuery(name = "Location.findDepartmentById", query = "SELECT l FROM Location l"
@@ -22,6 +23,8 @@ import javax.persistence.OneToMany;
 // :locationId , demek sana disaridan verecegim Id ile gidip sorguyu
 // calistiracagim demektir.
 })
+
+@Entity
 public class Location {
 
 	@Id

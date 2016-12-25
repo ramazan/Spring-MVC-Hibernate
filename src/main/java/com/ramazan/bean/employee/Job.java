@@ -12,13 +12,15 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
-@Entity
 @NamedQueries({
 		@NamedQuery(name = "Job.findAll", query = "SELECT j FROM Job j "),
-		@NamedQuery(name = "Job.findAllByJobTitle", query = "SELECT j FROM Job j WHERE j.jobTitle = :jobTitle")
+		@NamedQuery(name = "Job.findAllByJobTitle", query = "SELECT j FROM Job j WHERE j.jobTitle = :jobTitle"),
+		@NamedQuery(name = "Job.findEmployeesById", query = "SELECT j FROM Job j LEFT OUTER JOIN FETCH j.employees WHERE j.jobId = : jobId")
 		// Eger yukaridaki yazdigim sorgulardan herhangi birinde bir hata var ise
 		// compile zamaninda compile error alirim!
 })
+
+@Entity
 public class Job {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
