@@ -8,9 +8,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
+// @NamedQuery ile bu sekilde tanimlanan sorgular compile sirasinda cacheleniyor
+// ben bu sorgulardan birini cagirdigimda ise normalden daha hizli ulasiyorum.
+@NamedQueries({
+		@NamedQuery(name = "Location.findAll", query = "SELECT l FROM Location l"),
+		@NamedQuery(name = "Location.findDepartmentById", query = "SELECT l FROM Location l"
+				+ " LEFT OUTER JOIN FETCH l.departments WHERE l.location.Id = :locationId")
+// :locationId , demek sana disaridan verecegim Id ile gidip sorguyu
+// calistiracagim demektir.
+})
 public class Location {
 
 	@Id
@@ -31,29 +42,29 @@ public class Location {
 	private List<Department> deparments;
 
 	// @OneToMany
-	// 1'e n(çok) , Bir locationda birden fazla department olabilir
-	// Bu bir çok departmaný bir collection yapýsýnda tutmamýz gerekir.
-	// Örneðin City'i Kocaeli olan bir locationda 5 tane departman olsun
-	// departmanlarý list yapýsýnda tutacaðýz.
+	// 1'e n(cok) , Bir locationda birden fazla department olabilir
+	// Bu bir cok departmani bir collection yapisinda tutmamiz gerekir.
+	// ornegin City'i Kocaeli olan bir locationda 5 tane departman olsun
+	// departmanlari list yapisinda tutacagiz.
 
 	// Cascade
-	// Bu locationda bir deðiþiklik yaptýgýmýzda ona baðlý birimlerin
-	// yani burdaki örnekte departmanlarda nasýl deðiþiklikler olacaðýný
+	// Bu locationda bir degisiklik yaptigimizda ona bagli birimlerin
+	// yani burdaki ornekte departmanlarda nasil degisiklikler olacagini
 	// belirtiyoruz.
-	// Örneðin Locationýmýzýn þehri Kocaeli olsun bu locationda bulunan
-	// departmanlarýmýzda software , test ve network olsun
-	// Bu locationda deðiþiklik yaptýgýmýzda buradan departmanlarýn ne kadar
-	// etkileneeðini belirtiyoruz
+	// Ornegin Locationimizinn sehri Kocaeli olsun bu locationda bulunan
+	// departmanlarimizda software , test ve network olsun
+	// Bu locationda degisiklik yaptigimizda buradan departmanlarin ne kadar
+	// etkilenecegini belirtiyoruz
 
-	// Burada locationdaki güncelleme iþlemleri için o locationdaki bulunan
-	// departmanlardaka güncellemesine Cascade.ALL kullanarak izin verdik
-	// eðer bu locationý silersek bu locationa baðlý tüm departmanlarada silme
-	// izini verilir. Eðer silme izini vermezsek ve bu locationý silersek
-	// veritabanýndan hata alýrýz.
+	// Burada locationdaki guncelleme islemleri icin o locationdaki bulunan
+	// departmanlardaka guncellemesine Cascade.ALL kullanarak izin verdik
+	// eger bu locationi silersek bu locationa bagli tum departmanlarada silme
+	// izini verilir. Eger silme izini vermezsek ve bu locationi silersek
+	// veritabanindan hata aliriz.
 
 	// MappedBy
-	// Bunu kullanarak hangi class'ýn birinci sýnýf oldugunu belirtiyoruz
-	// Nedeni : departman  tablosunda location foreign keyini eklemesini söyledik
+	// Bunu kullanarak hangi class'in birinci sinif oldugunu belirtiyoruz
+	// Nedeni : departman tablosunda location foreign keyini eklemesini soyledik
 
 	public Location() {
 

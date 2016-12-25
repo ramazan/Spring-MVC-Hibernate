@@ -37,7 +37,7 @@ public class Employee {
 	@Column
 	private Date hireDate;
 
-	// @Temporal , date tutmak için özel annotation kullandýk
+	// @Temporal , date tutmak icin ozel annotation kullandik
 
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Job.class)
 	@JoinColumn(name = "job_id", foreignKey = @ForeignKey(foreignKeyDefinition = "job_fk"))

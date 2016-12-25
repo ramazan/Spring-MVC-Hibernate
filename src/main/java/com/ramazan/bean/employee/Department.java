@@ -30,16 +30,14 @@ public class Department {
 	private Location location;
 
 	// FetchType
-	// veritabanýmýzýda hibernate kullanarak department tablosuna select
-	// attýgýmýzda o tabloya baðlý tablolarýnda gelip gelmeyeceðini
+	// veritabanimizida hibernate kullanarak department tablosuna select
+	// attigimizda o tabloya bagli tablolarinda gelip gelmeyecegini
 	// FetchType kullanarak belirtiyoruz , eger LAZY yaparsak herbir departman
-	// varlýðý için location bilgisini alamayýz
-	// EAGER yaparsak locationýda alabiliriz.
+	// varligi icin location bilgisini alamayiz
+	// EAGER yaparsak locationida alabiliriz.
 
-	// FetchType kullanmazsak hibernate sorgu sýrasýnda bir session açýyor
+	// FetchType kullanmazsak hibernate sorgu sirasinda bir session aciyor
 
-	
-	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "department")
 	private List<Employee> employees;
 

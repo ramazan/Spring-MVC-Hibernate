@@ -22,7 +22,7 @@ import javax.persistence.Transient;
 public class VerificationToken {
 
 	@Transient
-	//tokenin sona erme süresi
+	//tokenin sona erme suresi  
 	private final int EXPIRY_DATE = 60*24; // 60dk * 24 saat  
 
 	@Id
@@ -54,11 +54,11 @@ public class VerificationToken {
 
 	private Date calculateExpiryDate(int EXPIRY_DATE) {
 		
-		Calendar calendar = Calendar.getInstance();  // takvim oluþtur
+		Calendar calendar = Calendar.getInstance();  // takvim olustur
 		
-		calendar.setTimeInMillis(new Date().getTime()); // þu anki 
+		calendar.setTimeInMillis(new Date().getTime()); // su anki 
 		
-		calendar.add(Calendar.MINUTE, EXPIRY_DATE); // Takvime dakika türünden data eklenmesi
+		calendar.add(Calendar.MINUTE, EXPIRY_DATE); // Takvime dakika turunden data eklenmesi
 		
 		return new Date(calendar.getTime().getTime());
 	}
