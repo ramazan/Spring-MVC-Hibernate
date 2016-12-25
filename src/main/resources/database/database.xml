@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+   
+   <!-- 
+   
+    <bean id="basicDataSource" class="org.apache.commons.dbcp2.BasicDataSourse" destroy-method="close">
+    	<property name="username" value="root" ></property>
+    	<property name="password" value="12345"></property>
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+    	<property name="url" value="jdbc:mysql://localhost:3306/employee"></property>
+    	<property name=""></property>
+    </bean>
+    
+    <bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    	<property name="username" value="root"></property>
+    	<property name="password" value="12345"></property>
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+    	<property name="url" value="jdbc:mysql://localhost:3306/employee"></property>
+    	
+    </bean>
+	 
+	 -->
+	
+	<!-- Hibernate tarafından saglanan baglantı class'i olan ComboPooled sinifi -->
+	<bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="username" value="root"></property>
+    	<property name="password" value="12345"></property>
+    	<property name="driverClas" value="com.mysql.jdbc.Driver"></property>
+    	<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/employee"></property>
+		
+		
+		<!-- veri tabanaı ayarları -->
+		<property name="maxPoolSize" value="100"></property>
+		<property name="minPoolSize" value="5"></property>
+		<property name="acquireIncrement" value="10"></property>
+		<property name="maxStatements" value="200"></property>
+		<property name="idleConnectionTestPeriod" value="300"></property>
+		<property name="maxIdleTime" value="2500"></property>
+	
+	
+	</bean>
+	
+
+	<!-- 
+	
+	Application tarafli Entity Manager :
+	 
+	 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean"></bean>
+		
+		@Autowired veya @PersistenceUnit
+		EntityManagerFactory emf;
+		
+		EntitiyManager em = emf.createEntityManager();
+		
+		Container tarafli Entity Manager:
+		
+		<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"></bean>
+		
+		@PersistenceContext
+		EntityManager em;
+	 -->
+	 
+	 	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+	 		<property name="dataSource" ref="comboPooledDataSource"></property>	<!-- yukaridaki data source ile bagliyorum -->
+	 		<!--  <property name="persistenceUnitName" value="my-pu"></property>  persistence.xml deki  konfigurasyon -->
+	 	
+	 		<property name="jpaVendorAdapter">
+	 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"> </bean>
+	 		</property>
+	 		
+	 		<property name="packagesToScan" value="com.ramazan.bean"></property>
+	 		
+	 		<property name="jpaProperties">
+	 			<props>
+	 				<prop key="hibernate.show._sql">true</prop>
+	 				<prop key="hibernate.format_sql">true</prop>
+	 				<prop key="hibernate.hbm2ddl.auto">creat</prop>
+	 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+	 			</props>
+	 		</property>
+	 	</bean>
+	 
+	<bean id="jpaTransactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory"></property>
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>
+
+
